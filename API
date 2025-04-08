@@ -1,3 +1,69 @@
-import requests
+# import requests
 
-api_key = ''
+# api_key = '12036b52'
+
+# movie_title = 'Wicked'
+
+# url = f'https://www.omdbapi.com/?apikey={api_key}&t={movie_title}'
+
+# movie = requests.get(url)
+
+# if movie.status_code == 200:
+#     movie_data = movie.json()
+
+#     print("Title:", movie_data.get("Title"))
+#     print("Genre:", movie_data.get("Genre"))
+#     print("Actors:", movie_data.get("Actors"))
+#     print("Rating:", movie_data.get("imdbRating"))
+#     print("Year:", movie_data.get("Year"))
+#     print("Box Office:", movie_data.get("BoxOffice"))
+# else:
+#     print("Error")
+
+import requests
+import sqlite3
+
+api_key = '12036b52'
+movie_title = ["Wicked", "Anyone But You"]
+
+conn = sqlite3.connect('movies.db')
+cur = conn.cursor()
+
+cur.execute('''
+CREATE TABLE IF NOT EXISTS OMDBMovies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    genre TEXT,
+    rating TEXT,
+    year TEXT
+)
+''')
+
+
+def fetch_omdb_data(title):
+    url = f"http://www.omdbapi.com/?t={title}&apikey={api_key}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    return None
+
+for title in movie_title:
+    data = fetch_omdb_data(title)
+    if data and data.get("Response") == "True":
+        cur.execute('''
+            INSERT INTO OMDBMovies (title, genre, rating, year)
+            VALUES (?, ?, ?, ?)
+        ''', (
+            data.get("Title"),
+            data.get("Genre"),
+            data.get("imdbRating"),
+            data.get("Year")
+        ))
+        print(f"Added: {data.get('Title')}")
+    else:
+        print(f"Error: {title}")
+
+conn.commit()
+conn.close()
+
+
