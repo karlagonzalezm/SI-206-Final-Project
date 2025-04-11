@@ -174,8 +174,8 @@ def insert_preformance_information(movies,cur):
         ))
 
 
-def driver():
-    """Main Application Driver"""
+def driver_database():
+    """Main application driver for database creation"""
     conn = sqlite3.connect('movies.db')
     cur = conn.cursor()
     cur.execute("DROP TABLE IF EXISTS Movies")
