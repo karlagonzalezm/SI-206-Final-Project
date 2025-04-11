@@ -5,32 +5,38 @@ movie_data = {'Adventure': {'count': 84, 'avg_rating': 7.04, 'avg_box_revenue': 
 genres = list(movie_data.keys())
 
 avg_ratings = [movie_data[genre]['avg_rating'] for genre in genres]
+ratings_bars_color = ['orange']
 plt.figure()
-plt.bar(genres, avg_ratings)
+plt.bar(genres, avg_ratings, color=ratings_bars_color)
 plt.xticks(rotation=45, ha='right')
 plt.xlabel('Genres')
 plt.ylabel('Average Movie Rating')
 plt.title('Average Movie Rating by Genre')
+plt.savefig('Average Movie Rating by Genre')
 plt.show()
 
 
 avg_box_office = [movie_data[genre]['avg_box_revenue'] / 1000000 for genre in genres]
+revenue_bars_color = ['blue']
 plt.figure()
-plt.bar(genres, avg_box_office)
+plt.bar(genres, avg_box_office, color=revenue_bars_color)
 plt.xticks(rotation=45, ha='right')
 plt.xlabel('Genres')
 plt.ylabel('Average Box Office Revenue (Millions $)')
 plt.title('Average Box Office Revenue by Genre')
+plt.savefig('Average Box Office Revenue by Genre')
 plt.show()
 
 
 avg_award_nom = [movie_data[genre]['avg_award_nom_ratio'] for genre in genres]
+award_bars_color = ['green']
 plt.figure()
-plt.bar(genres, avg_award_nom)
+plt.bar(genres, avg_award_nom, color=award_bars_color)
 plt.xticks(rotation=45, ha='right')
 plt.xlabel('Genres')
 plt.ylabel('Average Award Nomination Ratio')
 plt.title('Average Award Nomination Ratio by Genre')
+plt.savefig('Average Award Nomination Ratio by Genre')
 plt.show()
 
 
