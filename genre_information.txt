@@ -1,21 +1,13 @@
 Genre | Movie Count | Avg Rating | Avg Box Revenue | Avg Award/Nomination Ratio
 Action | 99  | 6.84 | 229027371.99 | 0.39
-Adult | 1  | 7.7 | None | None
 Adventure | 85  | 7.03 | 251549377.46 | 0.41
 Animation | 33  | 7.6 | 176422530.6 | 0.58
-Biography | 5  | 8.14 | 162986835.75 | 0.58
 Comedy | 47  | 6.75 | 201971986.15 | 0.39
 Crime | 21  | 6.81 | 123752045.0 | 0.37
-Documentary | 3  | 7.1 | None | None
 Drama | 67  | 6.67 | 130917409.92 | 0.47
-Family | 4  | 7.18 | 157535550.0 | 0.51
 Fantasy | 17  | 6.97 | 309609380.77 | 0.47
-History | 3  | 8.23 | 188955724.0 | 0.62
 Horror | 22  | 6.38 | 87479712.56 | 0.39
-Music | 1  | 8.6 | 151101803.0 | 0.79
 Mystery | 14  | 6.31 | 80208150.38 | 0.36
 Romance | 21  | 5.1 | 51725870.89 | 0.35
 Sci-Fi | 36  | 6.59 | 253569718.24 | 0.31
-Short | 4  | 6.57 | None | 0.17
 Thriller | 40  | 6.54 | 115624383.94 | 0.44
-War | 1  | 7.6 | 7265622.0 | 1.0

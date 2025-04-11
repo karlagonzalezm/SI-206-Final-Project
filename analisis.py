@@ -29,6 +29,15 @@ def get_genre_count(genres,cur):
     return genre_count
 
 
+def get_significant_genres(genre_count):
+    '''Returns a list only containign the significant genres'''
+    genres = []
+    for key,value in genre_count.items():
+        if value > 10:
+            genres.append(key)
+    return genres
+
+
 def get_average_rating(genres,cur):
     '''Returns a dictioanry that matches each genre to the average rating'''
     genre_average = {}
@@ -96,8 +105,9 @@ def driver_analisis():
     conn = sqlite3.connect('movies.db')
     cur = conn.cursor()
     genres = get_genres(cur)
-    genre_rating = get_average_rating(genres,cur)
     genre_count = get_genre_count(genres,cur)
+    genres = get_significant_genres(genre_count)
+    genre_rating = get_average_rating(genres,cur)
     genre_boxrevenue = get_average_boxrevenue(genres,cur)
     genre_ratio = get_average_ratio(genres,cur)
     write_to_file(genres,genre_rating,genre_count,genre_boxrevenue,genre_ratio)
