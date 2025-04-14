@@ -4,7 +4,7 @@ from visualize import driver_visualize
 
 def main():
     """Main Application Driver"""
-    #driver_database()
+    driver_database()
     driver_analisis()
     driver_visualize()
 
