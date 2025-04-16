@@ -6,7 +6,7 @@ def main():
     """Main Application Driver"""
     #driver_database()
     driver_analisis()
-    # driver_visualize()
+    driver_visualize()
 
 if __name__ == "__main__":
     main()
