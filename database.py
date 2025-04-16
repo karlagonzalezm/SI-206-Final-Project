@@ -26,6 +26,12 @@ def database_setup(cur):
         FOREIGN KEY (movie_id) REFERENCES Movies(id)
     )
     ''')
+    cur.execute('''
+    CREATE TABLE IF NOT EXISTS Genres (
+        genre_id INTEGER PRIMARY KEY,
+        genre TEXT
+    )
+    ''')
 
 
 def fetch_titles_from_years(year):
@@ -141,6 +147,26 @@ def process_preformance(movies):
     return movies
 
 
+def get_genres(movies,genre_set,last_key):
+    '''Returns a clean version of the movie genres'''
+    for movie in movies:
+        clean_genre = []
+        if movie['genre'] is not None:
+            genres = [g.strip() for g in movie['genre'].split(',')]
+            for genre in genres:
+                if genre in genre_set:
+                    clean_genre.append(genre_set[genre])
+                else:
+                    genre_set[genre] = last_key
+                    clean_genre.append(last_key)
+                    last_key += 1
+            movie['genre-clean'] = ",".join(str(g) for g in clean_genre)
+        else:
+            movie['genre-clean'] = None
+
+    return last_key
+ 
+
 def insert_movie_information(movies,cur):
     for movie in movies:
         year = int(movie['year']) if  movie['year'] not in (None, '', 'N/A') else -1
@@ -151,7 +177,7 @@ def insert_movie_information(movies,cur):
             ''', (
                 movie['title'],
                 movie['original_title'],
-                movie['genre'],
+                movie['genre-clean'],
                 runtime,
                 year
         ))
@@ -174,19 +200,35 @@ def insert_preformance_information(movies,cur):
         ))
 
 
+def insert_genre(genres,cur):
+    for genre in genres:
+        cur.execute('''
+                INSERT INTO Genres (genre_id, genre)
+                VALUES (?, ?)
+        ''', (
+            genre[1],
+            genre[0]
+        ))
+
+
 def driver_database():
     """Main application driver for database creation"""
     conn = sqlite3.connect('movies.db')
     cur = conn.cursor()
-    cur.execute("DROP TABLE IF EXISTS Movies")
-    cur.execute("DROP TABLE IF EXISTS Preformance")
     database_setup(cur)
+    genre_set = {}
+    last_key = 1
     for year in range(2015,2025):
         movie_titles = fetch_titles_from_years(year)
         movies = fetch_movie_information(movie_titles)
+        last_key = get_genres(movies,genre_set,last_key)
         insert_movie_information(movies,cur)
         preformance = fetch_preformance_information(movie_titles)
         preformance = process_preformance(preformance)
         insert_preformance_information(preformance,cur)
+    genres = list(genre_set.items())
+    for i in range(0, len(genres), 25):
+        chunk_items = genres[i:i+25]
+        insert_genre(chunk_items,cur)
     conn.commit()
     conn.close()
